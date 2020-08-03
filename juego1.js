@@ -19,6 +19,7 @@ window.onload = function() { //Se ejecuta cuando carga la página
             lienzo.fillRect(10, 10, 980, 480);
 
             var inicioJuego = new Image();
+            inicioJuego.src = "media/intro.jpg";
         }
     } else {
         alert("Lo sentimos, tu navegador es incompatible");
