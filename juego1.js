@@ -1,5 +1,5 @@
 window.onload = function () { //Se ejecuta cuando carga la página
-
+    
     var canvas = document.getElementById("juego");
     var imgVirus = new Image();
     imgVirus.src = "media/virus.png";
@@ -12,6 +12,10 @@ window.onload = function () { //Se ejecuta cuando carga la página
             
             var margen = canvas.getBoundingClientRect();
             var score = 0;
+            var inicioJuego = new Image();
+            inicioJuego.src = "media/inicioJuego.png";
+            var finalJuego = new Image();
+            finalJuego.src = "media/finalJuego.png";
 
             class Virus{
                 constructor(x,y){
@@ -20,7 +24,7 @@ window.onload = function () { //Se ejecuta cuando carga la página
                     this.y = y;
                 }
             }
-
+            
             var virus1 = new Virus(random(20,900),random(50,480));
             var virus2 = new Virus(random(20,900),random(50,480));
             var virus3 = new Virus(random(20,900),random(50,480));
@@ -45,7 +49,7 @@ window.onload = function () { //Se ejecuta cuando carga la página
                 lienzo.fillStyle = 'rgb(87,155,204)';
                 lienzo.fillRect(10, 10, 980, 480);
             }
-
+            
             function imprimirScore(){
                 lienzo.fillStyle = 'rgb(168,155,91)';
                 lienzo.fillRect(10, 10, 235, 40);
@@ -63,7 +67,12 @@ window.onload = function () { //Se ejecuta cuando carga la página
                 lienzo.drawImage(virus.image,virus.x,virus.y);   
             }
             function gameOver(){
-                alert("OVER!");
+                limpiar();
+                lienzo.drawImage(finalJuego,10,10);
+                lienzo.font = "bold 45px Verdana";   
+                lienzo.fillStyle = "white";
+                lienzo.fillText(score,585,110);
+                canvas.removeEventListener("click",atraparVirus);
             }
 
 
@@ -92,11 +101,9 @@ window.onload = function () { //Se ejecuta cuando carga la página
                 lienzo.drawImage(virus1.image,virus1.x,virus1.y);   
                 lienzo.drawImage(virus2.image,virus2.x,virus2.y);   
                 lienzo.drawImage(virus3.image,virus3.x,virus3.y);  
-                setTimeout(limpiar,15000);    
+                setTimeout(gameOver,5000);    
             }
 
-            var inicioJuego = new Image();
-            inicioJuego.src = "media/inicioJuego.png";
 
             inicioJuego.onload = function () {
                 canvas.addEventListener("click", atraparVirus);
