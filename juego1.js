@@ -7,7 +7,8 @@ window.onload = function () { //Se ejecuta cuando carga la página
     
     if (canvas && canvas.getContext) {
         var lienzo = canvas.getContext("2d");
-        if (lienzo) { //si el navegador es compatible se ejecuta esto
+        if (lienzo) 
+        { //si el navegador es compatible se ejecuta esto
             
             var margen = canvas.getBoundingClientRect();
             var score = 0;
