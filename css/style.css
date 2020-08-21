@@ -13,12 +13,12 @@ h1 {
     text-align: center;
 }
 
-p{
+p {
     font-family: 'Montserrat', sans-serif;
     text-align: center;
 }
 
-.botones{
+.botones {
     border: 1px solid black;
     border-radius: 100%;
     padding: 30px;
@@ -28,43 +28,45 @@ p{
     background-color: rgba(255, 255, 255, 0.589);
 }
 
-.botones:hover{
+.botones:hover {
     animation-name: pulse, animacionBoton;
     animation-duration: 3s;
-    animation-direction: alternate;
-    animation-iteration-count: infinite;
+    animation-fill-mode: forwards;
 }
 
-@keyframes animacionBoton{
-    from{}
-    to{background-color: #7abd3ca8}
+@keyframes animacionBoton {
+    from {}
+    to {
+        background-color: #7abd3ca8
+    }
 }
 
-.imgBoton{
+.imgBoton {
     width: 70%;
 }
 
-.labelBoton{
+.labelBoton {
     font-size: 1.2rem;
     min-width: 1rem;
 }
 
-a, a:hover{
+a,
+a:hover {
     text-decoration: none;
     color: inherit;
 }
 
-.creditos{
+.creditos {
     width: fit-content;
     display: flexbox;
-    
 }
-.index:active{
+
+.index:active {
     animation-name: pulse;
     animation-duration: 3s;
 }
 
-canvas{
+canvas {
     background-color: aliceblue;
     border: 1px solid black;
 }
