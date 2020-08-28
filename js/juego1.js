@@ -1,14 +1,16 @@
 window.onload = function() { //Se ejecuta cuando carga la página
 
     var canvas = document.getElementById("juego");
-    var imgVirus = new Image();
-    imgVirus.src = "../img/virus.png";
 
 
     if (canvas && canvas.getContext) {
         var lienzo = canvas.getContext("2d");
         if (lienzo) { //si el navegador es compatible se ejecuta esto
 
+            var musica = false;
+            var imgVirus = new Image();
+            imgVirus.src = "../img/virus.png";
+            var juego = true;
             var margen = canvas.getBoundingClientRect();
             var score = 0;
             var inicioJuego = new Image();
@@ -24,9 +26,9 @@ window.onload = function() { //Se ejecuta cuando carga la página
                 }
             }
 
-            var virus1 = new Virus(random(20, 900), random(50, 480));
-            var virus2 = new Virus(random(20, 900), random(50, 480));
-            var virus3 = new Virus(random(20, 900), random(50, 480));
+            var virus1 = new Virus(random(40, 900), random(90, 480));
+            var virus2 = new Virus(random(40, 900), random(90, 480));
+            var virus3 = new Virus(random(40, 900), random(90, 480));
 
             function random(min, max) {
                 var result;
@@ -61,46 +63,96 @@ window.onload = function() { //Se ejecuta cuando carga la página
                 lienzo.fillStyle = 'rgb(87,155,204)';
                 lienzo.fillRect(virus.x, virus.y, 32, 32);
 
-                virus.x = random(20, 900);
-                virus.y = random(50, 480);
+                virus.x = random(40, 900);
+                virus.y = random(60, 480);
                 lienzo.drawImage(virus.image, virus.x, virus.y);
             }
+
 
             function gameOver() {
                 limpiar();
                 lienzo.drawImage(finalJuego, 10, 10);
                 lienzo.font = "bold 45px Verdana";
                 lienzo.fillStyle = "white";
-                lienzo.fillText(score, 585, 110);
-                canvas.removeEventListener("click", atraparVirus);
+                lienzo.fillText(score, 570, 110);
+                juego = false;
+                canvas.removeEventListener('click', function(evt) {
+                    if (juego) {
+                        if (Math.abs((evt.clientX - margen.left) - (virus1.x + 16)) < 20 && Math.abs((evt.clientY - margen.top) - (virus1.y + 16)) < 20) {
+                            score++;
+                            imprimirScore();
+
+                            virusRespawn(virus1);
+                        }
+                        if (Math.abs((evt.clientX - margen.left) - (virus2.x + 16)) < 20 && Math.abs((evt.clientY - margen.top) - (virus2.y + 16)) < 20) {
+                            score++;
+                            imprimirScore();
+                            virusRespawn(virus2);
+                        }
+                        if (Math.abs((evt.clientX - margen.left) - (virus3.x + 16)) < 20 && Math.abs((evt.clientY - margen.top) - (virus3.y + 16)) < 20) {
+                            score++;
+                            imprimirScore();
+                            virusRespawn(virus3);
+                        }
+
+                    }
+                });
+                lienzo.font = "bold 20px Verdana";
+                lienzo.fillStyle = "#A3B113";
+                lienzo.fillRect(335, 440, 215, 25);
+                lienzo.fillStyle = "white";
+                lienzo.fillText("Intentar de nuevo", 340, 460);
+
+                lienzo.fillStyle = "#8B3E20";
+                lienzo.fillRect(645, 440, 190, 25);
+                lienzo.fillStyle = "white";
+                lienzo.fillText("Menu de juegos", 650, 460);
+
+                canvas.addEventListener("click", function(evt) {
+                    if (Math.abs((evt.clientX - margen.left) - 440) < 120 && Math.abs((evt.clientY - margen.top) - 453) < 15) {
+                        console.log("Again");
+                    }
+                })
             }
 
-
             function atraparVirus() {
+                var tick = new Audio('../audio/tick.mp3');
+                canvas.removeEventListener("click", atraparVirus);
                 canvas.addEventListener('click', function(evt) {
-                    if (Math.abs((evt.clientX - margen.left) - (virus1.x + 16)) < 20 && Math.abs((evt.clientY - margen.top) - (virus1.y + 16)) < 20) {
-                        score++;
-                        imprimirScore();
-                        virusRespawn(virus1);
-                    }
-                    if (Math.abs((evt.clientX - margen.left) - (virus2.x + 16)) < 20 && Math.abs((evt.clientY - margen.top) - (virus2.y + 16)) < 20) {
-                        score++;
-                        imprimirScore();
-                        virusRespawn(virus2);
-                    }
-                    if (Math.abs((evt.clientX - margen.left) - (virus3.x + 16)) < 20 && Math.abs((evt.clientY - margen.top) - (virus3.y + 16)) < 20) {
-                        score++;
-                        imprimirScore();
-                        virusRespawn(virus3);
+                    if (juego) {
+                        if (Math.abs((evt.clientX - margen.left) - (virus1.x + 16)) < 20 && Math.abs((evt.clientY - margen.top) - (virus1.y + 16)) < 20) {
+                            score++;
+                            imprimirScore();
+                            tick.play();
+                            virusRespawn(virus1);
+                        }
+                        if (Math.abs((evt.clientX - margen.left) - (virus2.x + 16)) < 20 && Math.abs((evt.clientY - margen.top) - (virus2.y + 16)) < 20) {
+                            score++;
+                            imprimirScore();
+                            tick.play();
+                            virusRespawn(virus2);
+                        }
+                        if (Math.abs((evt.clientX - margen.left) - (virus3.x + 16)) < 20 && Math.abs((evt.clientY - margen.top) - (virus3.y + 16)) < 20) {
+                            score++;
+                            imprimirScore();
+                            tick.play();
+                            virusRespawn(virus3);
+                        }
+
                     }
                 });
 
                 limpiar();
                 imprimirScore();
+                if (musica == false) {
+                    var musiquita = new Audio('../audio/musicaVideojuego.m4a');
+                    musiquita.play();
+                    musica = true;
+                }
                 lienzo.drawImage(virus1.image, virus1.x, virus1.y);
                 lienzo.drawImage(virus2.image, virus2.x, virus2.y);
                 lienzo.drawImage(virus3.image, virus3.x, virus3.y);
-                setTimeout(gameOver, 5000);
+                setTimeout(gameOver, 7000);
             }
 
 
