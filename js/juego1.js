@@ -6,7 +6,7 @@ window.onload = function() { //Se ejecuta cuando carga la página
         var lienzo = canvas.getContext("2d");
         if (lienzo) { //si el navegador es compatible se ejecuta esto
 
-            var menuJuego = new Image();
+            var menuJuego = new Image(); //Carga imagenes y audios necesarios para el juego
             menuJuego.src = "../img/menuJuego.png"
             var inicioJuego = new Image();
             inicioJuego.src = "../img/inicioJuego.png";
@@ -18,12 +18,11 @@ window.onload = function() { //Se ejecuta cuando carga la página
             var tick = new Audio('../audio/tick.mp3');
             var win = new Audio('../audio/win.wav');
 
-            var margen = canvas.getBoundingClientRect();
-            var mouse;
+            var margen = canvas.getBoundingClientRect(); //Obtiene la margen que rodea el canvas
+            var mouse; //En ella se almacenarán las posiciones de los clicks
 
-            var reproduciendoMusica = false;
+            var reproduciendoMusica = false; //Ayuda a describir el estado actual del juego
             var contando = false;
-            var juego = true;
             var score = 0;
 
             class Virus {
@@ -34,7 +33,7 @@ window.onload = function() { //Se ejecuta cuando carga la página
                 }
             }
 
-            function random(min, max) {
+            function random(min, max) { //Devuelve un valor al azar, dentro de min y max
                 return Math.floor(Math.random() * (max - min)) + min;
             }
 
@@ -42,16 +41,7 @@ window.onload = function() { //Se ejecuta cuando carga la página
             var virus2 = new Virus(random(40, 900), random(90, 400));
             var virus3 = new Virus(random(40, 900), random(90, 400));
 
-            function linea(x1, y1, x2, y2, color) { //funcion que dibuja lineas
-                lienzo.strokeStyle = color;
-                lienzo.beginPath();
-                lienzo.moveTo(x1, y1);
-                lienzo.lineTo(x2, y2);
-                lienzo.stroke();
-                lienzo.closePath();
-            }
-
-            function limpiar() {
+            function limpiar() { //Deja limpio el canvas, con su fondo por defecto
                 lienzo.fillStyle = 'white';
                 lienzo.fillRect(0, 0, 1000, 500);
                 lienzo.fillStyle = 'rgb(87,155,204)';
@@ -66,7 +56,7 @@ window.onload = function() { //Se ejecuta cuando carga la página
                 lienzo.fillText("Virus Capturados: " + score, 25, 40);
             }
 
-            function virusRespawn(virus) {
+            function virusRespawn(virus) { //Borra un virus y lo redibuja en una posicion al azar
                 lienzo.fillStyle = 'rgb(87,155,204)';
                 lienzo.fillRect(virus.x, virus.y, 32, 32);
 
@@ -81,7 +71,7 @@ window.onload = function() { //Se ejecuta cuando carga la página
                 lienzo.drawImage(virus3.image, virus3.x, virus3.y);
             }
 
-            menuJuego.onload = function() {
+            menuJuego.onload = function() { //Al cargar la imagen del menu, se dibuja y se añade un click listener
                 cargarMenu();
             }
 
@@ -90,7 +80,7 @@ window.onload = function() { //Se ejecuta cuando carga la página
                 canvas.addEventListener("click", menuListener);
             }
 
-            function menuListener(event) {
+            function menuListener(event) { //Escucha en el menú para saber que desea jugar el usuario
                 mouse = {
                     x: event.clientX - margen.left,
                     y: event.clientY - margen.top
@@ -104,27 +94,35 @@ window.onload = function() { //Se ejecuta cuando carga la página
 
             function virusGameOver() {
                 win.play();
+
                 canvas.removeEventListener("click", virusGameClickListener);
                 clearTimeout(contador);
                 limpiar();
+
                 lienzo.drawImage(finalJuego, 10, 10);
                 lienzo.font = "bold 45px Verdana";
                 lienzo.fillStyle = "white";
                 lienzo.fillText(score, 570, 110);
-                juego = false;
+
                 lienzo.font = "bold 20px Verdana";
                 lienzo.fillStyle = "#A3B113";
                 lienzo.fillRect(340, 440, 225, 25);
                 lienzo.fillStyle = "white";
                 lienzo.fillText("Intentar de nuevo", 350, 460);
 
-                score = 0;
-                juego = false;
+                lienzo.fillStyle = "#8B3E20";
+                lienzo.fillRect(600, 440, 225, 25);
+                lienzo.fillStyle = "white";
+                lienzo.fillText("Menú de Juegos", 625, 460);
+
                 contando = false;
                 canvas.addEventListener("click", virusGamePlayAgainListener);
             }
 
             function atraparVirus() {
+                score = 0;
+                contando = false;
+
                 canvas.removeEventListener("click", virusGamePlayAgainListener);
                 canvas.removeEventListener("click", menuListener);
                 canvas.addEventListener("click", virusGameClickListener);
@@ -141,7 +139,7 @@ window.onload = function() { //Se ejecuta cuando carga la página
                 }
 
                 if (contando == false) {
-                    contador = setTimeout(virusGameOver, 10);
+                    contador = setTimeout(virusGameOver, 1000);
                     contando = true;
                 }
             }
