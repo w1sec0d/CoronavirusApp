@@ -1,3 +1,4 @@
+debugger;
 window.onload = function() { //Se ejecuta cuando carga la página
 
     const canvas = document.getElementById("juego");
@@ -24,6 +25,14 @@ window.onload = function() { //Se ejecuta cuando carga la página
             unaVida.src = "../img/live.png";
             const signoPregunta = new Image();
             signoPregunta.src = "../img/question-mark.png";
+            const imagenA = new Image();
+            imagenA.src = "../img/mask.png";
+            const imagenB = new Image();
+            imagenB.src = "../img/social-distancing.png";
+            const imagenC = new Image();
+            imagenC.src = "../img/stay-at-home.png";
+            const imagenD = new Image();
+            imagenD.src = "../img/washHands.png";
 
             const musiquita = new Audio('../audio/musicaVideojuego.m4a');
             const tick = new Audio('../audio/tick.mp3');
@@ -46,6 +55,57 @@ window.onload = function() { //Se ejecuta cuando carga la página
                     this.y = y;
                 }
             }
+
+            //SECCION MEMORIA
+
+            var posiciones = [0, 1, 2, 3, 4, 5, 6, 7];
+            posiciones = posiciones.sort(() => Math.random() - 0.5);
+
+            var tipos = [0, 0, 1, 1, 2, 2, 3, 3];
+            tipos = tipos.sort(() => Math.random() - 0.5);
+
+            class Tarjeta {
+                constructor(posicion, tipo) {
+                    this.mostrado = false;
+                    this.posicion = posicion;
+                    switch (tipo) {
+                        case 0:
+                            this.imagen = imagenA;
+                            this.tipo = 0;
+                            break;
+                        case 1:
+                            this.imagen = imagenB;
+                            this.tipo = 1;
+                            break;
+                        case 2:
+                            this.imagen = imagenC;
+                            this.tipo = 2;
+                            break;
+                        case 3:
+                            this.imagen = imagenD;
+                            this.tipo = 3;
+                            break;
+                    }
+                }
+            }
+
+            var tarjetas = [
+                new Tarjeta(posiciones[0], tipos[0]),
+                new Tarjeta(posiciones[1], tipos[1]),
+                new Tarjeta(posiciones[2], tipos[2]),
+                new Tarjeta(posiciones[3], tipos[3]),
+                new Tarjeta(posiciones[4], tipos[4]),
+                new Tarjeta(posiciones[5], tipos[5]),
+                new Tarjeta(posiciones[6], tipos[6]),
+                new Tarjeta(posiciones[7], tipos[7])
+            ];
+
+            tarjetas.forEach(element => {
+                console.log("Posición: " + element.posicion + " Tipo: " + element.tipo);
+            });
+
+            var mostrado = [];
+            var paresHallados = 0;
 
             function random(min, max) { //Devuelve un valor al azar, dentro de min y max
                 return Math.floor(Math.random() * (max - min)) + min;
@@ -238,7 +298,96 @@ window.onload = function() { //Se ejecuta cuando carga la página
             function juegoMemoria() {
                 canvas.removeEventListener("click", menuListener);
                 canvas.addEventListener("click", juegoMemoriaListener);
+
+                posiciones = posiciones.sort(() => Math.random() - 0.5);
+                tipos = tipos.sort(() => Math.random() - 0.5);
+
                 lienzo.drawImage(inicioMemoria, 10, 10);
+            }
+
+            function imprimirTarjetas() {
+                lienzo.fillStyle = '#B9CC4E';
+                if (tarjetas[0].mostrado) {
+                    lienzo.drawImage(tarjetas[0].imagen, 50, 35);
+                } else {
+                    lienzo.fillRect(50, 35, 200, 200);
+                    lienzo.drawImage(signoPregunta, 50, 30);
+                }
+
+                if (tarjetas[1].mostrado) {
+                    lienzo.drawImage(tarjetas[1].imagen, 285, 35);
+                } else {
+                    lienzo.fillRect(285, 35, 200, 200);
+                    lienzo.drawImage(signoPregunta, 285, 30);
+                }
+
+                if (tarjetas[2].mostrado) {
+                    lienzo.drawImage(tarjetas[2].imagen, 520, 35);
+                } else {
+                    lienzo.fillRect(520, 35, 200, 200);
+                    lienzo.drawImage(signoPregunta, 520, 30);
+                }
+
+                if (tarjetas[3].mostrado) {
+                    lienzo.drawImage(tarjetas[3].imagen, 755, 35);
+                } else {
+                    lienzo.fillRect(755, 35, 200, 200);
+                    lienzo.drawImage(signoPregunta, 755, 30);
+                }
+
+                if (tarjetas[4].mostrado) {
+                    lienzo.drawImage(tarjetas[4].imagen, 50, 265);
+                } else {
+                    lienzo.fillRect(50, 265, 200, 200);
+                    lienzo.drawImage(signoPregunta, 50, 260);
+                }
+
+                if (tarjetas[5].mostrado) {
+                    lienzo.drawImage(tarjetas[5].imagen, 285, 265);
+                } else {
+                    lienzo.fillRect(285, 265, 200, 200);
+                    lienzo.drawImage(signoPregunta, 285, 260);
+                }
+
+                if (tarjetas[6].mostrado) {
+                    lienzo.drawImage(tarjetas[6].imagen, 520, 265);
+                } else {
+                    lienzo.fillRect(520, 265, 200, 200);
+                    lienzo.drawImage(signoPregunta, 520, 260);
+                }
+
+                if (tarjetas[7].mostrado) {
+                    lienzo.drawImage(tarjetas[7].imagen, 755, 265);
+                } else {
+                    lienzo.fillRect(755, 265, 200, 200);
+                    lienzo.drawImage(signoPregunta, 755, 260);
+                }
+            }
+
+            function comprobarParesIguales() {
+
+                if (mostrado[0].tipo == mostrado[1].tipo) {
+                    imprimirTarjetas();
+                    paresHallados++;
+                    tick.play();
+                    mostrado = [];
+                    if (paresHallados == 4) {
+                        win.play();
+                    }
+                } else {
+                    imprimirTarjetas();
+                    setTimeout(() => {
+                        tarjetas.forEach(element => {
+                            if (element.posicion == mostrado[0].posicion || element.posicion == mostrado[1].posicion) {
+                                element.mostrado = false;
+                            }
+                        });
+                        imprimirTarjetas();
+                        mostrado = [];
+                    }, 600);
+
+                }
+
             }
 
             function juegoMemoriaListener(event) {
@@ -249,43 +398,85 @@ window.onload = function() { //Se ejecuta cuando carga la página
                     y: event.clientY - margen.top
                 }
                 if (primerClick == false) {
+                    if (paresHallados != 8) {
 
+                        if (Math.abs((mouse.x) - 150) < 100 && Math.abs((mouse.y) - 135) < 100 && tarjetas[0].mostrado == false) {
+                            mostrado.push(tarjetas[0]);
+                            tarjetas[0].mostrado = true;
+                            if (mostrado.length < 2) {
+                                imprimirTarjetas();
+                            } else {
+                                comprobarParesIguales();
+                            }
+                        } else if (Math.abs((mouse.x) - 385) < 100 && Math.abs((mouse.y) - 135) < 100 && tarjetas[1].mostrado == false) {
+                            mostrado.push(tarjetas[1]);
+                            tarjetas[1].mostrado = true;
+                            if (mostrado.length < 2) {
+                                imprimirTarjetas();
+                            } else {
+                                comprobarParesIguales();
+                            }
+                        } else if (Math.abs((mouse.x) - 620) < 100 && Math.abs((mouse.y) - 135) < 100 && tarjetas[2].mostrado == false) {
+                            mostrado.push(tarjetas[2]);
+                            tarjetas[2].mostrado = true;
+                            if (mostrado.length < 2) {
+                                imprimirTarjetas();
+                            } else {
+                                comprobarParesIguales();
+                            }
+                        } else if (Math.abs((mouse.x) - 855) < 100 && Math.abs((mouse.y) - 135) < 100 && tarjetas[3].mostrado == false) {
+                            mostrado.push(tarjetas[3]);
+                            tarjetas[3].mostrado = true;
+                            if (mostrado.length < 2) {
+                                imprimirTarjetas();
+                            } else {
+                                comprobarParesIguales();
+                            }
+                        } else if (Math.abs((mouse.x) - 150) < 100 && Math.abs((mouse.y) - 365) < 100 && tarjetas[4].mostrado == false) {
+                            mostrado.push(tarjetas[4]);
+                            tarjetas[4].mostrado = true;
+                            if (mostrado.length < 2) {
+                                imprimirTarjetas();
+                            } else {
+                                comprobarParesIguales();
+                            }
+                        } else if (Math.abs((mouse.x) - 385) < 100 && Math.abs((mouse.y) - 365) < 100 && tarjetas[5].mostrado == false) {
+                            mostrado.push(tarjetas[5]);
+                            tarjetas[5].mostrado = true;
+                            if (mostrado.length < 2) {
+                                imprimirTarjetas();
+                            } else {
+                                comprobarParesIguales();
+                            }
+                        } else if (Math.abs((mouse.x) - 620) < 100 && Math.abs((mouse.y) - 365) < 100 && tarjetas[6].mostrado == false) {
+                            mostrado.push(tarjetas[6]);
+                            tarjetas[6].mostrado = true;
+                            if (mostrado.length < 2) {
+                                imprimirTarjetas();
+                            } else {
+                                comprobarParesIguales();
+                            }
+                        } else if (Math.abs((mouse.x) - 855) < 100 && Math.abs((mouse.y) - 365) < 100 && tarjetas[7].mostrado == false) {
+                            mostrado.push(tarjetas[7]);
+                            tarjetas[7].mostrado = true;
+                            if (mostrado.length < 2) {
+                                imprimirTarjetas();
+                            } else {
+                                comprobarParesIguales();
+                            }
+                        }
+                    } else {
+                        console.log("ganaste");
+                    }
                 } else {
                     primerClick = false;
                 }
+
             }
 
-            class Tarjeta {
-                constructor(nombre, posicion) {
-                    this.nombre = nombre;
-                    this.posicion = posicion;
-                }
-            }
-
-            var contenidoTarjetas = [Tarjeta()];
-
-            function imprimirTarjetas() {
-                lienzo.fillStyle = '#B9CC4E';
-                lienzo.fillRect(45, 30, 200, 200);
-                lienzo.fillRect(280, 30, 200, 200);
-                lienzo.fillRect(515, 30, 200, 200);
-                lienzo.fillRect(750, 30, 200, 200);
-                lienzo.fillRect(45, 260, 200, 200);
-                lienzo.fillRect(280, 260, 200, 200);
-                lienzo.fillRect(515, 260, 200, 200);
-                lienzo.fillRect(750, 260, 200, 200);
-                lienzo.drawImage(signoPregunta, 45, 30);
-                lienzo.drawImage(signoPregunta, 280, 30);
-                lienzo.drawImage(signoPregunta, 515, 30);
-                lienzo.drawImage(signoPregunta, 750, 30);
-                lienzo.drawImage(signoPregunta, 45, 260);
-                lienzo.drawImage(signoPregunta, 280, 260);
-                lienzo.drawImage(signoPregunta, 515, 260);
-                lienzo.drawImage(signoPregunta, 750, 260);
-            }
+        } else {
+            alert("Lo sentimos, tu navegador es incompatible");
         }
-    } else {
-        alert("Lo sentimos, tu navegador es incompatible");
-    }
 
+    }
 }
