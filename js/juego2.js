@@ -29,7 +29,6 @@ window.onload = function() { //Se ejecuta cuando carga la página
             function jugar() {
                 canvas.removeEventListener("click", jugar);
                 limpiar();
-
             }
 
             inicioMemoria.onload = function() {

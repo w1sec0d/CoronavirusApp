@@ -1,29 +1,43 @@
 window.onload = function() { //Se ejecuta cuando carga la página
 
-    var canvas = document.getElementById("juego");
+    const canvas = document.getElementById("juego");
 
     if (canvas && canvas.getContext) {
-        var lienzo = canvas.getContext("2d");
+        const lienzo = canvas.getContext("2d");
         if (lienzo) { //si el navegador es compatible se ejecuta esto
 
-            var menuJuego = new Image(); //Carga imagenes y audios necesarios para el juego
+            const menuJuego = new Image(); //Carga imagenes y audios necesarios para el juego
             menuJuego.src = "../img/menuJuego.png"
-            var inicioJuego = new Image();
+            const inicioJuego = new Image();
             inicioJuego.src = "../img/inicioJuego.png";
-            var finalJuego = new Image();
+            const finalJuego = new Image();
             finalJuego.src = "../img/finalJuego.png";
-            var imgVirus = new Image();
+            const imgVirus = new Image();
             imgVirus.src = "../img/virus.png";
+            const inicioMemoria = new Image();
+            inicioMemoria.src = "../img/inicioMemoria.png";
+            const tresVidas = new Image();
+            tresVidas.src = "../img/3lives.png";
+            const dosVidas = new Image();
+            dosVidas.src = "../img/2lives.png";
+            const unaVida = new Image();
+            unaVida.src = "../img/live.png";
+            const signoPregunta = new Image();
+            signoPregunta.src = "../img/question-mark.png";
 
-            var tick = new Audio('../audio/tick.mp3');
-            var win = new Audio('../audio/win.wav');
+            const musiquita = new Audio('../audio/musicaVideojuego.m4a');
+            const tick = new Audio('../audio/tick.mp3');
+            const win = new Audio('../audio/win.wav');
+            const fail = new Audio('../audio/fail.wav')
 
-            var margen = canvas.getBoundingClientRect(); //Obtiene la margen que rodea el canvas
+            const margen = canvas.getBoundingClientRect(); //Obtiene la margen que rodea el canvas
             var mouse; //En ella se almacenarán las posiciones de los clicks
 
             var reproduciendoMusica = false; //Ayuda a describir el estado actual del juego
             var contando = false;
+            var primerClick;
             var score = 0;
+            var vidas = 3;
 
             class Virus {
                 constructor(x, y) {
@@ -49,11 +63,25 @@ window.onload = function() { //Se ejecuta cuando carga la página
             }
 
             function imprimirScore() {
-                lienzo.fillStyle = 'rgb(168,155,91)';
+                lienzo.fillStyle = '#A3B113';
                 lienzo.fillRect(10, 10, 235, 40);
                 lienzo.font = "20px Verdana";
                 lienzo.fillStyle = "white";
                 lienzo.fillText("Virus Capturados: " + score, 25, 40);
+            }
+
+            function imprimirVidas() {
+                switch (vidas) {
+                    case 1:
+                        lienzo.drawImage(unaVida, 855, 10);
+                        break;
+                    case 2:
+                        lienzo.drawImage(dosVidas, 855, 10);
+                        break;
+                    case 3:
+                        lienzo.drawImage(tresVidas, 855, 10);
+                        break;
+                }
             }
 
             function virusRespawn(virus) { //Borra un virus y lo redibuja en una posicion al azar
@@ -77,7 +105,10 @@ window.onload = function() { //Se ejecuta cuando carga la página
 
             function cargarMenu() {
                 lienzo.drawImage(menuJuego, 10, 10);
+                canvas.removeEventListener("click", juegoVirusJugarDeNuevoListener);
+                canvas.removeEventListener("click", juegoVirusClickListener);
                 canvas.addEventListener("click", menuListener);
+                musiquita.pause();
             }
 
             function menuListener(event) { //Escucha en el menú para saber que desea jugar el usuario
@@ -88,21 +119,28 @@ window.onload = function() { //Se ejecuta cuando carga la página
                 if (Math.abs((mouse.x) - 435) < 70 && Math.abs((mouse.y) - 265) < 75) {
                     atraparVirus();
                 } else if (Math.abs((mouse.x) - 610) < 70 && Math.abs((mouse.y) - 265) < 75) {
-                    location.href = '../html/juego2.html';
+                    juegoMemoria();
                 }
             }
 
-            function virusGameOver() {
+            function juegoVirusGameOver() {
                 win.play();
 
-                canvas.removeEventListener("click", virusGameClickListener);
+                canvas.removeEventListener("click", juegoVirusClickListener);
                 clearTimeout(contador);
                 limpiar();
 
-                lienzo.drawImage(finalJuego, 10, 10);
-                lienzo.font = "bold 45px Verdana";
-                lienzo.fillStyle = "white";
-                lienzo.fillText(score, 570, 110);
+                if (score < 9) {
+                    lienzo.drawImage(finalJuego, 10, 10);
+                    lienzo.font = "bold 45px Verdana";
+                    lienzo.fillStyle = "white";
+                    lienzo.fillText(score, 585, 110);
+                } else {
+                    lienzo.drawImage(finalJuego, 10, 10);
+                    lienzo.font = "bold 45px Verdana";
+                    lienzo.fillStyle = "white";
+                    lienzo.fillText(score, 570, 110);
+                }
 
                 lienzo.font = "bold 20px Verdana";
                 lienzo.fillStyle = "#A3B113";
@@ -116,75 +154,134 @@ window.onload = function() { //Se ejecuta cuando carga la página
                 lienzo.fillText("Menú de Juegos", 625, 460);
 
                 contando = false;
-                canvas.addEventListener("click", virusGamePlayAgainListener);
+                canvas.addEventListener("click", juegoVirusJugarDeNuevoListener);
             }
 
             function atraparVirus() {
                 score = 0;
+                vidas = 3;
                 contando = false;
 
-                canvas.removeEventListener("click", virusGamePlayAgainListener);
+                canvas.removeEventListener("click", juegoVirusJugarDeNuevoListener);
                 canvas.removeEventListener("click", menuListener);
-                canvas.addEventListener("click", virusGameClickListener);
+                canvas.addEventListener("click", juegoVirusClickListener);
+                limpiar();
                 lienzo.drawImage(inicioJuego, 10, 10);
 
-                limpiar();
-                imprimirVirus();
-                imprimirScore();
-
-                if (reproduciendoMusica == false) {
-                    var musiquita = new Audio('../audio/musicaVideojuego.m4a');
-                    musiquita.play();
-                    reproduciendoMusica = true;
-                }
+                musiquita.play();
 
                 if (contando == false) {
-                    contador = setTimeout(virusGameOver, 1000);
+                    contador = setTimeout(juegoVirusGameOver, 10000);
                     contando = true;
                 }
             }
 
-            function virusGameClickListener(event) {
+            function juegoVirusClickListener(event) {
+                limpiar();
+                imprimirScore();
+                imprimirVirus();
+                imprimirVidas();
+
                 mouse = {
                     x: event.clientX - margen.left,
                     y: event.clientY - margen.top
                 }
 
-                if (Math.abs((mouse.x) - (virus1.x + 16)) < 20 && Math.abs((mouse.y) - (virus1.y + 16)) < 20) {
-                    score++;
-                    limpiar();
-                    imprimirScore();
-                    virusRespawn(virus1);
-                    imprimirVirus();
-                    tick.play();
-                } else if (Math.abs((mouse.x) - (virus2.x + 16)) < 20 && Math.abs((mouse.y) - (virus2.y + 16)) < 20) {
-                    score++;
-                    limpiar();
-                    imprimirScore();
-                    virusRespawn(virus2);
-                    imprimirVirus();
-                    tick.play();
-                } else if (Math.abs((mouse.x) - (virus3.x + 16)) < 20 && Math.abs((mouse.y) - (virus3.y + 16)) < 20) {
-                    score++;
-                    limpiar();
-                    imprimirScore();
-                    virusRespawn(virus3);
-                    imprimirVirus();
-                    tick.play();
+                if (primerClick == false) {
+                    if (Math.abs((mouse.x) - (virus1.x + 16)) < 20 && Math.abs((mouse.y) - (virus1.y + 16)) < 20) {
+                        score++;
+                        virusRespawn(virus1);
+                        imprimirScore();
+                        tick.play();
+                    } else if (Math.abs((mouse.x) - (virus2.x + 16)) < 20 && Math.abs((mouse.y) - (virus2.y + 16)) < 20) {
+                        score++;
+                        virusRespawn(virus2);
+                        imprimirScore();
+                        tick.play();
+                    } else if (Math.abs((mouse.x) - (virus3.x + 16)) < 20 && Math.abs((mouse.y) - (virus3.y + 16)) < 20) {
+                        score++;
+                        virusRespawn(virus3);
+                        imprimirScore();
+                        tick.play();
+                    } else {
+                        vidas--;
+                        fail.play();
+                        imprimirVidas();
+                    }
+                    if (vidas == 0) {
+                        clearTimeout(contador);
+                        juegoVirusGameOver();
+                    }
+                } else {
+                    primerClick = false;
+                }
+
+            }
+
+            function juegoVirusJugarDeNuevoListener(event) {
+                mouse = {
+                    x: event.clientX - margen.left,
+                    y: event.clientY - margen.top
+                }
+                console.log(mouse.x);
+                console.log(mouse.y);
+                if (Math.abs((mouse.x) - 450) < 115 && Math.abs((mouse.y) - 455) < 15) {
+                    primerClick = true;
+                    atraparVirus();
+                } else if (Math.abs((mouse.x) - 710) < 115 && Math.abs((mouse.y) - 455) < 15) {
+                    primerClick = true;
+                    cargarMenu();
+                }
+
+            }
+
+            function juegoMemoria() {
+                canvas.removeEventListener("click", menuListener);
+                canvas.addEventListener("click", juegoMemoriaListener);
+                lienzo.drawImage(inicioMemoria, 10, 10);
+            }
+
+            function juegoMemoriaListener(event) {
+                limpiar();
+                imprimirTarjetas();
+                mouse = {
+                    x: event.clientX - margen.left,
+                    y: event.clientY - margen.top
+                }
+                if (primerClick == false) {
+
+                } else {
+                    primerClick = false;
                 }
             }
 
-            function virusGamePlayAgainListener(event) {
-                console.log("Listening");
-                mouse = {
-                    x: event.clientX - margen.left,
-                    y: event.clientY - margen.top
+            class Tarjeta {
+                constructor(nombre, posicion) {
+                    this.nombre = nombre;
+                    this.posicion = posicion;
                 }
-                console.log(mouse.y);
-                if (Math.abs((mouse.x) - 550) < 200 && Math.abs((mouse.y) - 455) < 15) {
-                    atraparVirus();
-                }
+            }
 
+            var contenidoTarjetas = [Tarjeta()];
+
+            function imprimirTarjetas() {
+                lienzo.fillStyle = '#B9CC4E';
+                lienzo.fillRect(45, 30, 200, 200);
+                lienzo.fillRect(280, 30, 200, 200);
+                lienzo.fillRect(515, 30, 200, 200);
+                lienzo.fillRect(750, 30, 200, 200);
+                lienzo.fillRect(45, 260, 200, 200);
+                lienzo.fillRect(280, 260, 200, 200);
+                lienzo.fillRect(515, 260, 200, 200);
+                lienzo.fillRect(750, 260, 200, 200);
+                lienzo.drawImage(signoPregunta, 45, 30);
+                lienzo.drawImage(signoPregunta, 280, 30);
+                lienzo.drawImage(signoPregunta, 515, 30);
+                lienzo.drawImage(signoPregunta, 750, 30);
+                lienzo.drawImage(signoPregunta, 45, 260);
+                lienzo.drawImage(signoPregunta, 280, 260);
+                lienzo.drawImage(signoPregunta, 515, 260);
+                lienzo.drawImage(signoPregunta, 750, 260);
             }
         }
     } else {
