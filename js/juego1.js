@@ -33,6 +33,8 @@ window.onload = function() { //Se ejecuta cuando carga la página
             imagenC.src = "../img/stay-at-home.png";
             const imagenD = new Image();
             imagenD.src = "../img/washHands.png";
+            const finalJuegoMemoria = new Image();
+            finalJuegoMemoria.src = "../img/finalJuegoMemoria.png";
 
             const musiquita = new Audio('../audio/musicaVideojuego.m4a');
             const tick = new Audio('../audio/tick.mp3');
@@ -167,8 +169,23 @@ window.onload = function() { //Se ejecuta cuando carga la página
                 lienzo.drawImage(menuJuego, 10, 10);
                 canvas.removeEventListener("click", juegoVirusJugarDeNuevoListener);
                 canvas.removeEventListener("click", juegoVirusClickListener);
+                canvas.removeEventListener("click", juegoMemoriaJugarDeNuevoListener);
                 canvas.addEventListener("click", menuListener);
                 musiquita.pause();
+
+            }
+
+            function imprimirBotonesFinales() {
+                lienzo.font = "bold 20px Verdana";
+                lienzo.fillStyle = "#A3B113";
+                lienzo.fillRect(340, 440, 225, 25);
+                lienzo.fillStyle = "white";
+                lienzo.fillText("Intentar de nuevo", 350, 460);
+
+                lienzo.fillStyle = "#8B3E20";
+                lienzo.fillRect(600, 440, 225, 25);
+                lienzo.fillStyle = "white";
+                lienzo.fillText("Menú de Juegos", 625, 460);
             }
 
             function menuListener(event) { //Escucha en el menú para saber que desea jugar el usuario
@@ -202,16 +219,7 @@ window.onload = function() { //Se ejecuta cuando carga la página
                     lienzo.fillText(score, 570, 110);
                 }
 
-                lienzo.font = "bold 20px Verdana";
-                lienzo.fillStyle = "#A3B113";
-                lienzo.fillRect(340, 440, 225, 25);
-                lienzo.fillStyle = "white";
-                lienzo.fillText("Intentar de nuevo", 350, 460);
-
-                lienzo.fillStyle = "#8B3E20";
-                lienzo.fillRect(600, 440, 225, 25);
-                lienzo.fillStyle = "white";
-                lienzo.fillText("Menú de Juegos", 625, 460);
+                imprimirBotonesFinales();
 
                 contando = false;
                 canvas.addEventListener("click", juegoVirusJugarDeNuevoListener);
@@ -292,17 +300,33 @@ window.onload = function() { //Se ejecuta cuando carga la página
                     primerClick = true;
                     cargarMenu();
                 }
-
             }
 
             function juegoMemoria() {
                 canvas.removeEventListener("click", menuListener);
+                canvas.removeEventListener("click", juegoMemoriaJugarDeNuevoListener);
                 canvas.addEventListener("click", juegoMemoriaListener);
 
                 posiciones = posiciones.sort(() => Math.random() - 0.5);
                 tipos = tipos.sort(() => Math.random() - 0.5);
 
                 lienzo.drawImage(inicioMemoria, 10, 10);
+            }
+
+            function juegoMemoriaJugarDeNuevoListener(event) {
+                mouse = {
+                    x: event.clientX - margen.left,
+                    y: event.clientY - margen.top
+                }
+                console.log(mouse.x);
+                console.log(mouse.y);
+                if (Math.abs((mouse.x) - 450) < 115 && Math.abs((mouse.y) - 455) < 15) {
+                    primerClick = true;
+                    juegoMemoria();
+                } else if (Math.abs((mouse.x) - 710) < 115 && Math.abs((mouse.y) - 455) < 15) {
+                    primerClick = true;
+                    cargarMenu();
+                }
             }
 
             function imprimirTarjetas() {
@@ -373,6 +397,14 @@ window.onload = function() { //Se ejecuta cuando carga la página
                     mostrado = [];
                     if (paresHallados == 4) {
                         win.play();
+                        setTimeout(() => {
+                            mostrado = [];
+                            paresHallados = 0;
+                            lienzo.drawImage(finalJuegoMemoria, 10, 10);
+                            imprimirBotonesFinales();
+                            canvas.removeEventListener("click", juegoMemoriaListener);
+                            canvas.addEventListener("click", juegoMemoriaJugarDeNuevoListener);
+                        }, 500);
                     }
                 } else {
                     imprimirTarjetas();
@@ -384,7 +416,7 @@ window.onload = function() { //Se ejecuta cuando carga la página
                         });
                         imprimirTarjetas();
                         mostrado = [];
-                    }, 600);
+                    }, 500);
 
                 }
 
@@ -398,77 +430,80 @@ window.onload = function() { //Se ejecuta cuando carga la página
                     y: event.clientY - margen.top
                 }
                 if (primerClick == false) {
-                    if (paresHallados != 8) {
 
-                        if (Math.abs((mouse.x) - 150) < 100 && Math.abs((mouse.y) - 135) < 100 && tarjetas[0].mostrado == false) {
-                            mostrado.push(tarjetas[0]);
-                            tarjetas[0].mostrado = true;
-                            if (mostrado.length < 2) {
-                                imprimirTarjetas();
-                            } else {
-                                comprobarParesIguales();
-                            }
-                        } else if (Math.abs((mouse.x) - 385) < 100 && Math.abs((mouse.y) - 135) < 100 && tarjetas[1].mostrado == false) {
-                            mostrado.push(tarjetas[1]);
-                            tarjetas[1].mostrado = true;
-                            if (mostrado.length < 2) {
-                                imprimirTarjetas();
-                            } else {
-                                comprobarParesIguales();
-                            }
-                        } else if (Math.abs((mouse.x) - 620) < 100 && Math.abs((mouse.y) - 135) < 100 && tarjetas[2].mostrado == false) {
-                            mostrado.push(tarjetas[2]);
-                            tarjetas[2].mostrado = true;
-                            if (mostrado.length < 2) {
-                                imprimirTarjetas();
-                            } else {
-                                comprobarParesIguales();
-                            }
-                        } else if (Math.abs((mouse.x) - 855) < 100 && Math.abs((mouse.y) - 135) < 100 && tarjetas[3].mostrado == false) {
-                            mostrado.push(tarjetas[3]);
-                            tarjetas[3].mostrado = true;
-                            if (mostrado.length < 2) {
-                                imprimirTarjetas();
-                            } else {
-                                comprobarParesIguales();
-                            }
-                        } else if (Math.abs((mouse.x) - 150) < 100 && Math.abs((mouse.y) - 365) < 100 && tarjetas[4].mostrado == false) {
-                            mostrado.push(tarjetas[4]);
-                            tarjetas[4].mostrado = true;
-                            if (mostrado.length < 2) {
-                                imprimirTarjetas();
-                            } else {
-                                comprobarParesIguales();
-                            }
-                        } else if (Math.abs((mouse.x) - 385) < 100 && Math.abs((mouse.y) - 365) < 100 && tarjetas[5].mostrado == false) {
-                            mostrado.push(tarjetas[5]);
-                            tarjetas[5].mostrado = true;
-                            if (mostrado.length < 2) {
-                                imprimirTarjetas();
-                            } else {
-                                comprobarParesIguales();
-                            }
-                        } else if (Math.abs((mouse.x) - 620) < 100 && Math.abs((mouse.y) - 365) < 100 && tarjetas[6].mostrado == false) {
-                            mostrado.push(tarjetas[6]);
-                            tarjetas[6].mostrado = true;
-                            if (mostrado.length < 2) {
-                                imprimirTarjetas();
-                            } else {
-                                comprobarParesIguales();
-                            }
-                        } else if (Math.abs((mouse.x) - 855) < 100 && Math.abs((mouse.y) - 365) < 100 && tarjetas[7].mostrado == false) {
-                            mostrado.push(tarjetas[7]);
-                            tarjetas[7].mostrado = true;
-                            if (mostrado.length < 2) {
-                                imprimirTarjetas();
-                            } else {
-                                comprobarParesIguales();
-                            }
+                    if (Math.abs((mouse.x) - 150) < 100 && Math.abs((mouse.y) - 135) < 100 && tarjetas[0].mostrado == false) {
+                        mostrado.push(tarjetas[0]);
+                        tarjetas[0].mostrado = true;
+                        if (mostrado.length < 2) {
+                            imprimirTarjetas();
+                        } else {
+                            comprobarParesIguales();
                         }
-                    } else {
-                        console.log("ganaste");
+                    } else if (Math.abs((mouse.x) - 385) < 100 && Math.abs((mouse.y) - 135) < 100 && tarjetas[1].mostrado == false) {
+                        mostrado.push(tarjetas[1]);
+                        tarjetas[1].mostrado = true;
+                        if (mostrado.length < 2) {
+                            imprimirTarjetas();
+                        } else {
+                            comprobarParesIguales();
+                        }
+                    } else if (Math.abs((mouse.x) - 620) < 100 && Math.abs((mouse.y) - 135) < 100 && tarjetas[2].mostrado == false) {
+                        mostrado.push(tarjetas[2]);
+                        tarjetas[2].mostrado = true;
+                        if (mostrado.length < 2) {
+                            imprimirTarjetas();
+                        } else {
+                            comprobarParesIguales();
+                        }
+                    } else if (Math.abs((mouse.x) - 855) < 100 && Math.abs((mouse.y) - 135) < 100 && tarjetas[3].mostrado == false) {
+                        mostrado.push(tarjetas[3]);
+                        tarjetas[3].mostrado = true;
+                        if (mostrado.length < 2) {
+                            imprimirTarjetas();
+                        } else {
+                            comprobarParesIguales();
+                        }
+                    } else if (Math.abs((mouse.x) - 150) < 100 && Math.abs((mouse.y) - 365) < 100 && tarjetas[4].mostrado == false) {
+                        mostrado.push(tarjetas[4]);
+                        tarjetas[4].mostrado = true;
+                        if (mostrado.length < 2) {
+                            imprimirTarjetas();
+                        } else {
+                            comprobarParesIguales();
+                        }
+                    } else if (Math.abs((mouse.x) - 385) < 100 && Math.abs((mouse.y) - 365) < 100 && tarjetas[5].mostrado == false) {
+                        mostrado.push(tarjetas[5]);
+                        tarjetas[5].mostrado = true;
+                        if (mostrado.length < 2) {
+                            imprimirTarjetas();
+                        } else {
+                            comprobarParesIguales();
+                        }
+                    } else if (Math.abs((mouse.x) - 620) < 100 && Math.abs((mouse.y) - 365) < 100 && tarjetas[6].mostrado == false) {
+                        mostrado.push(tarjetas[6]);
+                        tarjetas[6].mostrado = true;
+                        if (mostrado.length < 2) {
+                            imprimirTarjetas();
+                        } else {
+                            comprobarParesIguales();
+                        }
+                    } else if (Math.abs((mouse.x) - 855) < 100 && Math.abs((mouse.y) - 365) < 100 && tarjetas[7].mostrado == false) {
+                        mostrado.push(tarjetas[7]);
+                        tarjetas[7].mostrado = true;
+                        if (mostrado.length < 2) {
+                            imprimirTarjetas();
+                        } else {
+                            comprobarParesIguales();
+                        }
                     }
+
                 } else {
+                    posiciones = posiciones.sort(() => Math.random() - 0.5);
+                    tipos = tipos.sort(() => Math.random() - 0.5);
+                    tarjetas.forEach(element => {
+                        element.mostrado = false;
+                    });
+                    imprimirTarjetas();
                     primerClick = false;
                 }
 
