@@ -13,33 +13,33 @@
     </script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat&family=Sora:wght@500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css" />
-    <link rel="shortcut icon" href="./img/virus.ico" type="image/x-icon">
-    <link rel="stylesheet" href="./css/style.css">
+    <link rel="shortcut icon" href="./assets/img/virus.ico" type="image/x-icon">
+    <link rel="stylesheet" href="./assets/css/style.css">
     <title>Tu guía en cuarentena</title>
 </head>
 
 <body class="row justify-content-center align-items-center" style="margin: 0; width: 100vw; height: 100vh;">
     <nav class="navbar navbar-expand-lg fixed-top navbar-light bg-light" style="font-family: 'Sora', sans-serif">
         <a class="navbar-brand" href="#">
-            <img src="./img/virus.png" style="margin-right: 1%" alt="" srcset=""> Tu guía en cuarentena
+            <img src="./assets/img/virus.png" style="margin-right: 1%" alt="" srcset=""> Tu guía en cuarentena
         </a>
     </nav>
 
     <div class="container-fluid" id="index">
         <div class="row justify-content-center align-items-center minh-100">
-            <a href="./html/juego.html">
+            <a href="./view/juego.php">
                 <div id="nino">
                     <div class="col botones text-center">
                         <p class="labelBoton">Modo Niños</p>
-                        <img src="./img/child.png" alt="" class="imgBoton">
+                        <img src="./assets/img/child.png" alt="" class="imgBoton">
                     </div>
                 </div>
             </a>
-            <a href="./html/padrino.html">
+            <a href="./view/padrino.php">
                 <div id="adulto">
                     <div class="col botones text-center">
                         <p class="labelBoton">Modo Adultos</p>
-                        <img src="./img/adult.png" alt="" class="imgBoton">
+                        <img src="./assets/img/adult.png" alt="" class="imgBoton">
                     </div>
                 </div>
             </a>

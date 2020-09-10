@@ -8,33 +8,33 @@ window.onload = function() { //Se ejecuta cuando carga la página
         if (lienzo) { //si el navegador es compatible se ejecuta esto
 
             const menuJuego = new Image(); //Carga imagenes y audios necesarios para el juego
-            menuJuego.src = "../img/menuJuego.png"
+            menuJuego.src = "../assets/img/menuJuego.png"
             const inicioJuego = new Image();
-            inicioJuego.src = "../img/inicioJuego.png";
-            const finalJuego = new Image();
-            finalJuego.src = "../img/finalJuego.png";
+            inicioJuego.src = "../assets/img/inicioJuego.png";
+            const finalJuegoVirus = new Image();
+            finalJuegoVirus.src = "../assets/img/finalJuegoVirus.png";
             const imgVirus = new Image();
-            imgVirus.src = "../img/virus.png";
+            imgVirus.src = "../assets/img/virus.png";
             const inicioMemoria = new Image();
-            inicioMemoria.src = "../img/inicioMemoria.png";
+            inicioMemoria.src = "../assets/img/inicioMemoria.png";
             const tresVidas = new Image();
-            tresVidas.src = "../img/3lives.png";
+            tresVidas.src = "../assets/img/3lives.png";
             const dosVidas = new Image();
-            dosVidas.src = "../img/2lives.png";
+            dosVidas.src = "../assets/img/2lives.png";
             const unaVida = new Image();
-            unaVida.src = "../img/live.png";
+            unaVida.src = "../assets/img/live.png";
             const signoPregunta = new Image();
-            signoPregunta.src = "../img/question-mark.png";
+            signoPregunta.src = "../assets/img/question-mark.png";
             const imagenA = new Image();
-            imagenA.src = "../img/mask.png";
+            imagenA.src = "../assets/img/mask.png";
             const imagenB = new Image();
-            imagenB.src = "../img/social-distancing.png";
+            imagenB.src = "../assets/img/social-distancing.png";
             const imagenC = new Image();
-            imagenC.src = "../img/stay-at-home.png";
+            imagenC.src = "../assets/img/stay-at-home.png";
             const imagenD = new Image();
-            imagenD.src = "../img/washHands.png";
+            imagenD.src = "../assets/img/washHands.png";
             const finalJuegoMemoria = new Image();
-            finalJuegoMemoria.src = "../img/finalJuegoMemoria.png";
+            finalJuegoMemoria.src = "../assets/img/finalJuegoMemoria.png";
 
             const musiquita = new Audio('../audio/musicaVideojuego.m4a');
             const tick = new Audio('../audio/tick.mp3');
@@ -101,10 +101,6 @@ window.onload = function() { //Se ejecuta cuando carga la página
                 new Tarjeta(posiciones[6], tipos[6]),
                 new Tarjeta(posiciones[7], tipos[7])
             ];
-
-            tarjetas.forEach(element => {
-                console.log("Posición: " + element.posicion + " Tipo: " + element.tipo);
-            });
 
             var mostrado = [];
             var paresHallados = 0;
@@ -208,12 +204,12 @@ window.onload = function() { //Se ejecuta cuando carga la página
                 limpiar();
 
                 if (score < 9) {
-                    lienzo.drawImage(finalJuego, 10, 10);
+                    lienzo.drawImage(finalJuegoVirus, 10, 10);
                     lienzo.font = "bold 45px Verdana";
                     lienzo.fillStyle = "white";
                     lienzo.fillText(score, 585, 110);
                 } else {
-                    lienzo.drawImage(finalJuego, 10, 10);
+                    lienzo.drawImage(finalJuegoVirus, 10, 10);
                     lienzo.font = "bold 45px Verdana";
                     lienzo.fillStyle = "white";
                     lienzo.fillText(score, 570, 110);
@@ -291,14 +287,14 @@ window.onload = function() { //Se ejecuta cuando carga la página
                     x: event.clientX - margen.left,
                     y: event.clientY - margen.top
                 }
-                console.log(mouse.x);
-                console.log(mouse.y);
                 if (Math.abs((mouse.x) - 450) < 115 && Math.abs((mouse.y) - 455) < 15) {
                     primerClick = true;
                     atraparVirus();
                 } else if (Math.abs((mouse.x) - 710) < 115 && Math.abs((mouse.y) - 455) < 15) {
                     primerClick = true;
                     cargarMenu();
+                } else if (Math.abs((mouse.x) - 100) < 100 && Math.abs((mouse.y) - 40) < 30) {
+                    puntajesAltos();
                 }
             }
 
@@ -318,8 +314,6 @@ window.onload = function() { //Se ejecuta cuando carga la página
                     x: event.clientX - margen.left,
                     y: event.clientY - margen.top
                 }
-                console.log(mouse.x);
-                console.log(mouse.y);
                 if (Math.abs((mouse.x) - 450) < 115 && Math.abs((mouse.y) - 455) < 15) {
                     primerClick = true;
                     juegoMemoria();
@@ -507,6 +501,20 @@ window.onload = function() { //Se ejecuta cuando carga la página
                     primerClick = false;
                 }
 
+            }
+
+            function puntajesAltos() {
+                canvas.removeEventListener("click", juegoVirusJugarDeNuevoListener);
+                Swal.fire({
+                    title: '¿Cual es tu nombre?',
+                    icon: 'question',
+                    html: '<form method=\"POST\" action=\"puntajesAltos.php\">' +
+                        '<input type=\"text\" class=\"form-control\" name=\"nombre\" style=\"text-transform:uppercase;\"/><br>' +
+                        '<input type=\"text\" class=\"hidden\" name=\"puntaje\" value=\"' + score + '\"/><br>' +
+                        '<input type=\"submit\" class=\"swal2-confirm swal2-styled\" value=\"Continuar\"/>' +
+                        '</form>',
+                    showConfirmButton: false
+                });
             }
 
         } else {
