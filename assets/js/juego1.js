@@ -35,6 +35,10 @@ window.onload = function() { //Se ejecuta cuando carga la página
             imagenD.src = "../assets/img/washHands.png";
             const finalJuegoMemoria = new Image();
             finalJuegoMemoria.src = "../assets/img/finalJuegoMemoria.png";
+            const diapositiva1 = new Image();
+            diapositiva1.src = "../assets/img/diapositiva1.png";
+            const diapositiva2 = new Image();
+            diapositiva2.src = "../assets/img/diapositiva2.png";
 
             const musiquita = new Audio('../audio/musicaVideojuego.m4a');
             const tick = new Audio('../audio/tick.mp3');
@@ -166,6 +170,7 @@ window.onload = function() { //Se ejecuta cuando carga la página
                 canvas.removeEventListener("click", juegoVirusJugarDeNuevoListener);
                 canvas.removeEventListener("click", juegoVirusClickListener);
                 canvas.removeEventListener("click", juegoMemoriaJugarDeNuevoListener);
+                canvas.removeEventListener("click", aprenderClickListener);
                 canvas.addEventListener("click", menuListener);
                 musiquita.pause();
 
@@ -193,6 +198,8 @@ window.onload = function() { //Se ejecuta cuando carga la página
                     atraparVirus();
                 } else if (Math.abs((mouse.x) - 610) < 70 && Math.abs((mouse.y) - 265) < 75) {
                     juegoMemoria();
+                } else if (Math.abs((mouse.x) - 780) < 70 && Math.abs((mouse.y) - 265) < 75) {
+                    aprender();
                 }
             }
 
@@ -515,6 +522,74 @@ window.onload = function() { //Se ejecuta cuando carga la página
                         '</form>',
                     showConfirmButton: false
                 });
+            }
+
+            function imprimirDiapositivas() {
+                switch (diapositiva) {
+                    case -1:
+                        cargarMenu();
+                        break;
+
+                    case 0:
+                        lienzo.drawImage(diapositiva1, 10, 10);
+
+                        lienzo.font = "bold 20px Verdana";
+                        lienzo.fillStyle = "#A3B113";
+                        lienzo.fillRect(10, 450, 250, 40);
+                        lienzo.fillStyle = "white";
+                        lienzo.fillText("Menú de juegos", 40, 475);
+
+
+                        lienzo.fillStyle = "#8B3E20";
+                        lienzo.fillRect(740, 450, 250, 40);
+                        lienzo.fillStyle = "white";
+                        lienzo.fillText("Siguiente Diapositiva", 745, 475);
+
+                        break;
+
+                    case 1:
+                        lienzo.drawImage(diapositiva2, 10, 10);
+
+                        lienzo.font = "bold 20px Verdana";
+                        lienzo.fillStyle = "#A3B113";
+                        lienzo.fillRect(10, 450, 250, 40);
+                        lienzo.fillStyle = "white";
+                        lienzo.fillText("Anterior diapositiva", 25, 475);
+
+
+                        lienzo.fillStyle = "#8B3E20";
+                        lienzo.fillRect(740, 450, 250, 40);
+                        lienzo.fillStyle = "white";
+                        lienzo.fillText("Menú de juegos", 775, 475);
+                        break;
+
+                    case 2:
+                        cargarMenu();
+                        break;
+                }
+            }
+
+            function aprender() {
+                canvas.removeEventListener("click", menuListener);
+                canvas.addEventListener("click", aprenderClickListener);
+                lienzo.font = "bold 20px Verdana";
+                diapositiva = 0;
+                limpiar();
+                imprimirDiapositivas();
+            }
+
+            function aprenderClickListener(event) {
+                mouse = {
+                    x: event.clientX - margen.left,
+                    y: event.clientY - margen.top
+                }
+                if (Math.abs((mouse.x) - 125) < 135 && Math.abs((mouse.y) - 470) < 20) {
+                    diapositiva--;
+                    imprimirDiapositivas();
+                } else if (Math.abs((mouse.x) - 860) < 135 && Math.abs((mouse.y) - 470) < 20) {
+                    diapositiva++;
+                    imprimirDiapositivas();
+                }
             }
 
         } else {
