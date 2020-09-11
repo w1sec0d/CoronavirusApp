@@ -40,10 +40,10 @@ window.onload = function() { //Se ejecuta cuando carga la página
             const diapositiva2 = new Image();
             diapositiva2.src = "../assets/img/diapositiva2.png";
 
-            const musiquita = new Audio('../audio/musicaVideojuego.m4a');
-            const tick = new Audio('../audio/tick.mp3');
-            const win = new Audio('../audio/win.wav');
-            const fail = new Audio('../audio/fail.wav')
+            const musiquita = new Audio('../assets/audio/musicaVideojuego.mp3');
+            const tick = new Audio('../assets/audio/tick.mp3');
+            const win = new Audio('../assets/audio/win.mp3');
+            const fail = new Audio('../assets/audio/fail.mp3')
 
             const margen = canvas.getBoundingClientRect(); //Obtiene la margen que rodea el canvas
             var mouse; //En ella se almacenarán las posiciones de los clicks

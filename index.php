@@ -48,7 +48,7 @@
                 <a href="https://www.freepik.es/fotos-vectores-gratis/vintage">Vector de Vintage creado por vectorpocket - www.freepik.es</a>
             </p>
         </div>
-
+    </div>
 </body>
 
 </html>

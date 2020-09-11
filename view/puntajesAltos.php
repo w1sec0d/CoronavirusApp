@@ -82,7 +82,7 @@ if (isset($_REQUEST["nombre"]) && isset($_REQUEST["puntaje"])) {
             $('#puntaje').DataTable({
                 "language": spanishTable,
                 "paging": false,
-                "order": [ 1, 'desc']
+                "order": [1, 'desc']
             });
         });
         var spanishTable = {

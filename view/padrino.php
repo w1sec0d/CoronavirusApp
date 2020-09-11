@@ -3,6 +3,8 @@
 
 <head>
     <title>Modo Adultos 👨</title>
+    <link rel="shortcut icon" href="../assets/img/virus.ico" type="image/x-icon">
+
     <style type="text/css">
         body {
             background-image: url("https://image.freepik.com/vector-gratis/edificios-ciudad-moderna_1441-3042.jpg");
@@ -254,18 +256,18 @@
         <h1> LO QUE DEBES SABER SOBRE EL COVID-19 🌎</h1>
     </div>
     <div class="contenido">
-        <h3 class="h3-1"><a href="#covid-19"> informacion general del covid-19</h3></a>
-        <h3 class="h3-2"><a href="#sintomas"> sintomas del coronavirus</h3></a>
+        <h3 class="h3-1"><a href="#covid-19"> Información general del covid-19</h3></a>
+        <h3 class="h3-2"><a href="#sintomas"> Síntomas del coronavirus</h3></a>
         <h3 class="h3-3"><a href="#consejos"> Consejos </h3></a>
     </div>
     <div class="contenido2">
-        <h3 class="h3-4"><a href="#test"> Test rapido</h3></a>
+        <h3 class="h3-4"><a href="#test"> Test rápido</h3></a>
     </div>
     <div class="informacion"></div>
     <br>
 
     <div>
-        <p id="covid-19" class="p1"> ¿QUE ES EL COVID-19/CORONAVIRUS? <br>La COVID‑19 es la enfermedad infecciosa causada por el coronavirus que se ha descubierto más recientemente. Tanto este nuevo virus como la enfermedad que provoca eran desconocidos antes de que estallara el
+        <p id="covid-19" class="p1"> ¿QUÉ ES EL COVID-19/CORONAVIRUS? <br>La COVID‑19 es la enfermedad infecciosa causada por el coronavirus que se ha descubierto más recientemente. Tanto este nuevo virus como la enfermedad que provoca eran desconocidos antes de que estallara el
             brote en Wuhan (China) en diciembre de 2019. Actualmente la COVID‑19 es una pandemia que afecta a muchos países de todo el mundo. Los coronavirus son una extensa familia de virus que pueden causar enfermedades tanto en animales como en humanos.
             En los humanos, se sabe que varios coronavirus causan infecciones respiratorias que pueden ir desde el resfriado común hasta enfermedades más graves como el síndrome respiratorio de Oriente Medio (MERS) y el síndrome respiratorio agudo severo
             (SRAS) <br><br>¿COMO SE PROPAGA?<br> Una persona puede contraer la COVID‑19 por contacto con otra que esté infectada por el virus. La enfermedad se propaga principalmente de persona a persona a través de las gotículas que salen despedidas
@@ -277,7 +279,7 @@
     <hr>
     <br>
     <div>
-        <p id="sintomas" class="p2"> SINTOMAS DEL CORONAVIRUS <br> Los síntomas más habituales de la COVID-19 son la fiebre, la tos seca y el cansancio. Otros síntomas menos frecuentes que afectan a algunos pacientes son los dolores y molestias, la congestión nasal, el dolor de cabeza,
+        <p id="sintomas" class="p2"> SÍNTOMAS DEL CORONAVIRUS <br> Los síntomas más habituales de la COVID-19 son la fiebre, la tos seca y el cansancio. Otros síntomas menos frecuentes que afectan a algunos pacientes son los dolores y molestias, la congestión nasal, el dolor de cabeza,
             la conjuntivitis, el dolor de garganta, la diarrea, la pérdida del gusto o el olfato y las erupciones cutáneas o cambios de color en los dedos de las manos o los pies. Estos síntomas suelen ser leves y comienzan gradualmente. Algunas de las
             personas infectadas solo presentan síntomas levísimos. La mayoría de las personas (alrededor del 80%) se recuperan de la enfermedad sin necesidad de tratamiento hospitalario. Alrededor de 1 de cada 5 personas que contraen la COVID‑19 acaba
             presentando un cuadro grave y experimenta dificultades para respirar. Las personas mayores y las que padecen afecciones médicas previas como hipertensión arterial, problemas cardiacos o pulmonares, diabetes o cáncer tienen más probabilidades
@@ -305,7 +307,10 @@
     <div>
         <p id="test" class="p4">TEST <br> Por motivos profesionales hemos decidido dejar un link el cual te servira para hacerte un autodiagnostico del covid-19, este test fue echo por el ministerio de salud de Colombia, por lo que podemos decir que hacerlo es una manera segura
             de verificar tu estado de salud <a href="https://coronaviruscolombia.gov.co/Covid19/auto-diagnostico.html">Test</a>
+            <p style="text-align: center;">Información extraida de <a href="https://www.who.int/es">la página web de la OMS</a></p>
+
     </div>
+
 
 </body>
 
